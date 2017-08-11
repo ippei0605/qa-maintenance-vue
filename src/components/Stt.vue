@@ -1,5 +1,5 @@
 <template>
-  <div class="answer">
+  <div class="stt">
     <myheader></myheader>
     <div class="container">
       <h1>{{ msg }}</h1>
@@ -11,13 +11,13 @@
   import myheader from '../Header'
 
   export default {
-    name: 'answer',
+    name: 'stt',
     components: {
       myheader
     },
     data: function () {
       return {
-        msg: 'Welcome to Answer'
+        msg: 'Welcome to Speech to Text'
       }
     }
   }

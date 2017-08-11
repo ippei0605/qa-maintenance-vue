@@ -1,5 +1,6 @@
 <template>
-  <div class="Nlc">
+  <div class="nlc">
+    <myheader></myheader>
     <div class="container-fluid" style="margin: 15px 0 0 0">
       <form id="uploadId">
         <div class="input-group">
@@ -74,8 +75,13 @@
 </template>
 
 <script>
+  import myheader from '../Header'
+
   export default {
     name: 'nlc',
+    components: {
+      myheader
+    },
     data: () => {
       return {
         msg: 'Welcome to Answer'
