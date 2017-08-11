@@ -14,7 +14,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a :class="['navbar-brand', $route.path === '/' ? 'active' : '']" href="#">Home</a>
+            <router-link to="/" :class="['navbar-brand', $route.path === '/' ? 'active' : '']">Home</router-link>
           </div>
           <div class="collapse navbar-collapse" id="navbarEexample7">
             <ul class="nav navbar-nav">

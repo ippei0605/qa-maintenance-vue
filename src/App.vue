@@ -31,4 +31,21 @@
   header h4 {
     color: #FFF;
   }
+
+  #loading-view {
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    position: fixed;
+    top: 150px;
+    left: 0;
+    filter: alpha(opacity=85);
+    -moz-opacity: 0.85;
+    -khtml-opacity: 0.85;
+    opacity: 0.85;
+    background-image: url(./assets/watson_black_animate.gif);
+    background-position: center 150px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
 </style>

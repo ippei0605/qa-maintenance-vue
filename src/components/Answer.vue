@@ -1,8 +1,11 @@
 <template>
   <div class="answer">
     <myheader></myheader>
+    <div id="anime"></div>
     <div class="container">
       <h1>{{ msg }}</h1>
+
+      <div v-show="loading"><span id="loading-view"></span></div>
     </div>
   </div>
 </template>
@@ -17,7 +20,8 @@
     },
     data: function () {
       return {
-        msg: 'Welcome to Answer'
+        msg: 'Welcome to Answer',
+        loading: false
       }
     }
   }

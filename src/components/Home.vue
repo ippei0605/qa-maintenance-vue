@@ -2,6 +2,7 @@
   <div class="home">
     <myheader></myheader>
     <div class="container-fluid">
+      <div v-show="loading"><span id="loading-view"></span></div>
       <div class="panel panel-default">
         <div class="panel-heading">Export data</div>
         <div class="panel-body">
@@ -44,6 +45,7 @@
     },
     data: function () {
       return {
+        loading: false,
         selected: 'export-answer',
         options: [
           {text: 'All contents', value: 'export-answer'},
@@ -59,6 +61,7 @@
     },
     methods: {
       view: function () {
+        this.loading = true
         const selected = this.selected
         const url = `http://localhost:6010/${selected}`
         axios.get(url)
@@ -70,9 +73,11 @@
               data = JSON.stringify(response.data, undefined, 2)
             }
             this.result = `<pre class="text-success">${data}</pre>`
+            this.loading = false
           })
           .catch((error) => {
             this.result = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`
+            this.loading = false
           })
       },
       download: function () {
