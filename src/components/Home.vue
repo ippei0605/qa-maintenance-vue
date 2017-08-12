@@ -36,7 +36,7 @@
 
 <script>
   import axios from 'axios'
-  import myheader from '../Header'
+  import myheader from './Header'
 
   export default {
     name: 'home',

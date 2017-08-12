@@ -75,7 +75,7 @@
 </template>
 
 <script>
-  import myheader from '../Header'
+  import myheader from './Header'
 
   export default {
     name: 'nlc',
