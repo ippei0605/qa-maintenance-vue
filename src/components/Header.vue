@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div>
     <header>
       <div class="container-fluid text-center">
         <h1>Q&A Maintenance</h1>

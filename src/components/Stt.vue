@@ -6,8 +6,9 @@
       <form id="modelFormId">
         <div class="btn-group btn-group-justified" role="group">
           <div class="btn-group" role="group">
-            <button type="button" id="createModelId" class="btn btn-default">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+            <button class="btn btn-default" @click="createModelModal.name=''" data-toggle="modal"
+                    data-target="#createModelModal">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create
             </button>
           </div>
           <div class="btn-group" role="group">
@@ -68,7 +69,6 @@
         <div class="panel-heading">WatsonSpeech.SpeechToText # recognizeMicrophone</div>
         <div class="panel-body"><p id="outputId">--</p></div>
       </div>
-      <div id="resultId"></div>
       <div v-if="customization">
         <div class="row">
           <div class="col-sm-12">
@@ -90,17 +90,57 @@
         </div>
       </div>
     </div>
+    <!-- モーダル -->
+    <div class="modal fade" id="createModelModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal"><span>×</span></button>
+            <h4 class="modal-title">Create</h4>
+          </div>
+          <div class="modal-body">
+            <p>「ja-JP_BroadbandModel」をベースにカスタムモデルを作成します。</p>
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">name</label>
+                <div class="col-sm-9">
+                  <input class="form-control" v-model="createModelModal.name" placeholder="名前">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">description</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" v-model="createModelModal.description" placeholder="説明">
+                </div>
+              </div>
+            </form>
+            <pre v-if="createModelModal.result">{{createModelModal.result}}</pre>
+          </div>
+          <div class="modal-footer">
+            <div class="row">
+              <div class="col-sm-6 text-left">
+                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+              </div>
+              <div class="col-sm-6 text-right">
+                <button class="btn btn-primary">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
   import myheader from './Header'
+  import sttModal from './SttModal'
 
   export default {
     name: 'stt',
     components: {
-      myheader
+      myheader, sttModal
     },
     data: function () {
       return {
@@ -112,9 +152,17 @@
       }
     },
     created: function () {
+      this.initCreateModelModal()
       this.getCustomizations()
     },
     methods: {
+      initCreateModelModal: function () {
+        this.createModelModal = {
+          name: '',
+          description: '',
+          result: null
+        }
+      },
       getCustomizations: function () {
         this.loading = true
         const url = `http://localhost:6010/stt2`
