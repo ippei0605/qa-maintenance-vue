@@ -4,7 +4,6 @@ import Home from '@/components/Home'
 import Answer from '@/components/Answer'
 import Nlc from '@/components/Nlc'
 import Stt from '@/components/Stt'
-import ItemModal from '@/components/ItemModal'
 
 Vue.use(Router)
 
@@ -17,10 +16,7 @@ export default new Router({
     }, {
       path: '/answer',
       name: 'Answer',
-      component: Answer,
-      children: [
-        { path: ':id', component: ItemModal, name: 'ItemModel' }
-      ]
+      component: Answer
     }, {
       path: '/nlc',
       name: 'Nlc',

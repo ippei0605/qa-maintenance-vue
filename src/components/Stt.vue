@@ -6,8 +6,7 @@
       <form id="modelFormId">
         <div class="btn-group btn-group-justified" role="group">
           <div class="btn-group" role="group">
-            <button class="btn btn-default" @click="initCreateModelModal" data-toggle="modal"
-                    data-target="#createModelModal">
+            <button class="btn btn-default" data-toggle="modal" data-target="#createModel">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create
             </button>
           </div>
@@ -90,58 +89,19 @@
         </div>
       </div>
     </div>
-    <!-- モーダル -->
-    <div class="modal fade" id="createModelModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button class="close" data-dismiss="modal"><span>×</span></button>
-            <h4 class="modal-title">Create</h4>
-          </div>
-          <div class="modal-body">
-            <p>「ja-JP_BroadbandModel」をベースにカスタムモデルを作成します。</p>
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-3 control-label">name</label>
-                <div class="col-sm-9">
-                  <input class="form-control" v-model="createModelModal.name" placeholder="名前">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">description</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control"
-                         v-model="createModelModal.description" placeholder="説明">
-                </div>
-              </div>
-            </form>
-            <pre v-if="createModelModal.result" :class="createModelModal.resultClass">{{createModelModal.result}}</pre>
-          </div>
-          <div class="modal-footer">
-            <div class="row">
-              <div class="col-sm-6 text-left">
-                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-              </div>
-              <div class="col-sm-6 text-right">
-                <button class="btn btn-primary" @click="createModel()">Create</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <stt-create-model v-on:update="getCustomizations"></stt-create-model>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
   import myheader from './Header'
-  import sttModal from './SttModal'
+  import sttCreateModel from './SttCreateModel'
 
   export default {
     name: 'stt',
     components: {
-      myheader, sttModal
+      myheader, sttCreateModel
     },
     data: function () {
       return {
@@ -149,23 +109,13 @@
         loading: false,
         customizations: null,
         customization: null,
-        customization_id: 'default',
-        createModelModal: null
+        customization_id: 'default'
       }
     },
     created: function () {
-      this.initCreateModelModal()
       this.getCustomizations()
     },
     methods: {
-      initCreateModelModal: function () {
-        this.createModelModal = {
-          name: '',
-          description: '',
-          result: null,
-          resultClass: 'text-success'
-        }
-      },
       getCustomizations: function () {
         this.loading = true
         const url = `http://localhost:6010/stt2`
@@ -203,25 +153,6 @@
               this.loading = false
             })
         }
-      },
-      createModel: function () {
-        this.loading = true
-        const url = `http://localhost:6010/stt2`
-        const params = new URLSearchParams()
-        params.append('name', this.createModelModal.name)
-        params.append('description', this.createModelModal.description)
-        axios.post(url, params)
-          .then((response) => {
-            this.createModelModal.result = response.data
-            this.loading = false
-            this.getCustomizations()
-          })
-          .catch((error) => {
-            console.log(error)
-            this.createModelModal.resultClass = 'text-danger'
-            this.createModelModal.result = error
-            this.loading = false
-          })
       }
     }
   }
