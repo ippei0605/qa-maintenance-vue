@@ -6,7 +6,7 @@
       <form id="modelFormId">
         <div class="btn-group btn-group-justified" role="group">
           <div class="btn-group" role="group">
-            <button class="btn btn-default" @click="createModelModal.name=''" data-toggle="modal"
+            <button class="btn btn-default" @click="initCreateModelModal" data-toggle="modal"
                     data-target="#createModelModal">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create
             </button>
@@ -110,11 +110,12 @@
               <div class="form-group">
                 <label class="col-sm-3 control-label">description</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" v-model="createModelModal.description" placeholder="説明">
+                  <input type="text" class="form-control"
+                         v-model="createModelModal.description" placeholder="説明">
                 </div>
               </div>
             </form>
-            <pre v-if="createModelModal.result">{{createModelModal.result}}</pre>
+            <pre v-if="createModelModal.result" :class="createModelModal.resultClass">{{createModelModal.result}}</pre>
           </div>
           <div class="modal-footer">
             <div class="row">
@@ -122,7 +123,7 @@
                 <button class="btn btn-default" data-dismiss="modal">Cancel</button>
               </div>
               <div class="col-sm-6 text-right">
-                <button class="btn btn-primary">Create</button>
+                <button class="btn btn-primary" @click="createModel()">Create</button>
               </div>
             </div>
           </div>
@@ -148,7 +149,8 @@
         loading: false,
         customizations: null,
         customization: null,
-        customization_id: 'default'
+        customization_id: 'default',
+        createModelModal: null
       }
     },
     created: function () {
@@ -160,7 +162,8 @@
         this.createModelModal = {
           name: '',
           description: '',
-          result: null
+          result: null,
+          resultClass: 'text-success'
         }
       },
       getCustomizations: function () {
@@ -200,6 +203,25 @@
               this.loading = false
             })
         }
+      },
+      createModel: function () {
+        this.loading = true
+        const url = `http://localhost:6010/stt2`
+        const params = new URLSearchParams()
+        params.append('name', this.createModelModal.name)
+        params.append('description', this.createModelModal.description)
+        axios.post(url, params)
+          .then((response) => {
+            this.createModelModal.result = response.data
+            this.loading = false
+            this.getCustomizations()
+          })
+          .catch((error) => {
+            console.log(error)
+            this.createModelModal.resultClass = 'text-danger'
+            this.createModelModal.result = error
+            this.loading = false
+          })
       }
     }
   }
