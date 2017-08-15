@@ -42,7 +42,7 @@
     components: {
       myheader
     },
-    data: function () {
+    data () {
       return {
         loading: false,
         selected: 'export-answer',
@@ -59,7 +59,7 @@
       }
     },
     methods: {
-      view: function () {
+      view () {
         this.loading = true
         const selected = this.selected
         $.ajax({
@@ -80,7 +80,7 @@
           this.loading = false
         })
       },
-      download: function () {
+      download () {
         const selected = this.selected
         const fileMap = {
           'export-answer': 'answer.json',

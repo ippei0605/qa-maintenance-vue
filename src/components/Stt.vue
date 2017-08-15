@@ -13,7 +13,9 @@
             </button>
           </div>
           <div type="button" class="btn-group" role="group">
-            <button type="button" id="trainBtnId" class="btn btn-default">
+            <button v-bind:disabled="customization === null || customization.model.status !== 'ready'"
+                    type="button" class="btn btn-default" @click="$refs.sttTrain.init()"
+                    data-toggle="modal" data-target="#sttTrainModalId">
               <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Train
             </button>
           </div>
@@ -83,11 +85,18 @@
         </div>
         <div class="row">
           <div class="col-sm-6">
-            <h3><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Corpora</a></h3>
+            <h3>
+              <a @click="$refs.sttCorpora.init()" data-toggle="modal" data-target="#sttCorporaModalId">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Corpora
+              </a>
+            </h3>
             <pre>{{JSON.stringify(customization.corpora, undefined, 2)}}</pre>
           </div>
           <div class="col-sm-6">
-            <h3><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Word</a></h3>
+            <h3><a @click="$refs.sttWord.init()" data-toggle="modal" data-target="#sttWordModalId">
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Word
+            </a>
+            </h3>
             <pre>{{JSON.stringify(customization.word, undefined, 2)}}</pre>
           </div>
         </div>
@@ -96,6 +105,9 @@
     <stt-create-model ref="sttCreateModel" v-on:update="getCustomizations"></stt-create-model>
     <stt-delete-model ref="sttDeleteModel" :customization_id="customization_id"
                       v-on:update="getCustomizations"></stt-delete-model>
+    <stt-corpora ref="sttCorpora" :customization="customization" v-on:update="getCustomization"></stt-corpora>
+    <stt-word ref="sttWord" :customization="customization" v-on:update="getCustomization"></stt-word>
+    <stt-train ref="sttTrain" :customization_id="customization_id" v-on:update="getCustomization"></stt-train>
   </div>
 </template>
 
@@ -104,15 +116,17 @@
   import myheader from './Header'
   import sttCreateModel from './SttCreateModel'
   import sttDeleteModel from './SttDeleteModel'
+  import sttCorpora from './SttCorpora'
+  import sttWord from './SttWord'
+  import sttTrain from './SttTrain'
 
   export default {
     name: 'stt',
     components: {
-      myheader, sttCreateModel, sttDeleteModel
+      myheader, sttCreateModel, sttDeleteModel, sttCorpora, sttWord, sttTrain
     },
-    data: function () {
+    data () {
       return {
-        msg: 'Welcome to Speech to Text',
         loading: false,
         customizations: null,
         customization: null,
@@ -121,11 +135,11 @@
         stream: null
       }
     },
-    created: function () {
+    created () {
       this.getCustomizations(true)
     },
     methods: {
-      startRecognize: function () {
+      startRecognize () {
         // Watson Speech to text と Text to Speech を使用するための情報を取得する。
         $.ajax({
           type: 'GET',
@@ -144,19 +158,21 @@
           this.stream.on('error', (error) => {
             console.log('error:', error)
             this.errorMessage = 'Speech to Text のストリーム操作でエラーが発生しました。'
+            this.stream = null
           })
         }).fail((error) => {
           console.log('error:', error)
           this.errorMessage = 'Speech to Text の呼び出しに失敗しました。'
+          this.stream = null
         })
       },
-      stopRecognize: function () {
+      stopRecognize () {
         if (this.stream) {
           this.stream.stop()
           this.stream = null
         }
       },
-      getCustomizations: function () {
+      getCustomizations () {
         this.loading = true
         $.ajax({
           type: 'GET',
@@ -172,7 +188,8 @@
           this.loading = false
         })
       },
-      getCustomization: function () {
+      getCustomization () {
+        this.errorMessage = ''
         if (this.customization_id === 'default') {
           this.customization = null
         } else {

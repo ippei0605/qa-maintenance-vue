@@ -53,7 +53,7 @@
 <script>
   export default {
     name: 'sttCreateModel',
-    data: function () {
+    data () {
       return {
         loading: false,
         name: '',
@@ -63,13 +63,13 @@
       }
     },
     methods: {
-      init: function () {
+      init () {
         this.name = ''
         this.description = ''
         this.result = null
         this.resultClass = 'text-success'
       },
-      createModel: function () {
+      createModel () {
         this.loading = true
         $.ajax({
           type: 'POST',
