@@ -1,30 +1,15 @@
 <template>
-  <div id="stt-create-model">
+  <div id="stt-delete-model">
     <div v-show="loading"><span id="loading-view"></span></div>
-    <div class="modal fade" id="sttCreateModelModalId" tabindex="-1">
+    <div class="modal fade" id="sttDeleteModelModalId" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button class="close" data-dismiss="modal"><span>×</span></button>
-            <h4 class="modal-title">Create Custom Model</h4>
+            <h4 class="modal-title">Delete Custom Model</h4>
           </div>
           <div class="modal-body">
-            <p>「ja-JP_BroadbandModel」をベースにカスタムモデルを作成します。</p>
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-3 control-label">name</label>
-                <div class="col-sm-9">
-                  <input class="form-control" v-model="name" placeholder="名前">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">description</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control"
-                         v-model="description" placeholder="説明">
-                </div>
-              </div>
-            </form>
+            <p>「{{customization_id}}」を削除します。</p>
             <pre v-if="result" :class="resultClass">{{result}}</pre>
           </div>
           <div class="modal-footer">
@@ -39,7 +24,7 @@
                   <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
                 <div class="col-sm-6 text-right">
-                  <button class="btn btn-primary" @click="createModel()">Create</button>
+                  <button class="btn btn-danger" @click="deleteModel()">Delete</button>
                 </div>
               </div>
             </div>
@@ -56,28 +41,23 @@
     data: function () {
       return {
         loading: false,
-        name: '',
-        description: '',
         result: null,
         resultClass: 'text-success'
       }
     },
+    props: {
+      customization_id: String
+    },
     methods: {
       init: function () {
-        this.name = ''
-        this.description = ''
         this.result = null
         this.resultClass = 'text-success'
       },
-      createModel: function () {
+      deleteModel: function () {
         this.loading = true
         $.ajax({
           type: 'POST',
-          url: `http://localhost:6010/stt2`,
-          data: {
-            name: this.name,
-            description: this.description
-          }
+          url: `http://localhost:6010/stt2/${this.customization_id}/delete`
         }).done((value) => {
           this.result = value
           this.$emit('update')

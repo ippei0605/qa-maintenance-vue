@@ -3,10 +3,12 @@
     <myheader></myheader>
     <div v-show="loading"><span id="loading-view"></span></div>
     <div class="container-fluid" style="margin: 15px 0 0 0">
+      <div v-if="error" class="alert alert-danger" role="alert"><p>エラーが発生しました。<br>{{error}}</p></div>
       <form id="modelFormId">
         <div class="btn-group btn-group-justified" role="group">
           <div class="btn-group" role="group">
-            <button class="btn btn-default" data-toggle="modal" data-target="#createModel">
+            <button type="button" class="btn btn-default" @click="$refs.sttCreateModel.init()"
+                    data-toggle="modal" data-target="#sttCreateModelModalId">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create
             </button>
           </div>
@@ -26,7 +28,9 @@
             </button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" id="deleteModelBtnId" class="btn btn-default">
+            <button type="button" v-bind:disabled="customization_id === 'default'" class="btn btn-default"
+                    @click="$refs.sttDeleteModel.init()"
+                    data-toggle="modal" data-target="#sttDeleteModelModalId">
               <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete model
             </button>
           </div>
@@ -89,19 +93,21 @@
         </div>
       </div>
     </div>
-    <stt-create-model v-on:update="getCustomizations"></stt-create-model>
+    <stt-create-model ref="sttCreateModel" v-on:update="getCustomizations"></stt-create-model>
+    <stt-delete-model ref="sttDeleteModel" :customization_id="customization_id"
+                      v-on:update="getCustomizations"></stt-delete-model>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
   import myheader from './Header'
   import sttCreateModel from './SttCreateModel'
+  import sttDeleteModel from './SttDeleteModel'
 
   export default {
     name: 'stt',
     components: {
-      myheader, sttCreateModel
+      myheader, sttCreateModel, sttDeleteModel
     },
     data: function () {
       return {
@@ -109,49 +115,52 @@
         loading: false,
         customizations: null,
         customization: null,
-        customization_id: 'default'
+        customization_id: 'default',
+        error: null
       }
     },
     created: function () {
-      this.getCustomizations()
+      this.getCustomizations(true)
     },
     methods: {
       getCustomizations: function () {
         this.loading = true
-        const url = `http://localhost:6010/stt2`
-        axios.get(url)
-          .then((response) => {
-            this.customizations = response.data
-            this.loading = false
-          })
-          .catch((error) => {
-            console.log(error)
-            this.customizations = null
-            this.loading = false
-          })
+        $.ajax({
+          type: 'GET',
+          url: 'http://localhost:6010/stt2'
+        }).done((value) => {
+          this.customizations = value
+          this.customization_id = 'default'
+        }).fail((error) => {
+          console.log('error:', error)
+          this.error = error
+          this.customizations = null
+        }).always(() => {
+          this.loading = false
+        })
       },
       getCustomization: function () {
         if (this.customization_id === 'default') {
           this.customization = null
         } else {
           this.loading = true
-          const url = `http://localhost:6010/stt2/${this.customization_id}`
-          axios.get(url)
-            .then((response) => {
-              this.customization = response.data
-              for (let i in this.customizations) {
-                if (this.customizations[i].customization_id === this.customization.model.customization_id) {
-                  this.customizations[i] = this.customization.model
-                  break
-                }
+          $.ajax({
+            type: 'GET',
+            url: `http://localhost:6010/stt2/${this.customization_id}`
+          }).done((value) => {
+            this.customization = value
+            for (let i in this.customizations) {
+              if (this.customizations[i].customization_id === this.customization.model.customization_id) {
+                this.customizations[i] = this.customization.model
+                break
               }
-              this.loading = false
-            })
-            .catch((error) => {
-              console.log(error)
-              this.customization = null
-              this.loading = false
-            })
+            }
+          }).fail((error) => {
+            console.log('error:', error)
+            this.customization = null
+          }).always(() => {
+            this.loading = false
+          })
         }
       }
     }

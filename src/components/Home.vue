@@ -35,7 +35,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import myheader from './Header'
 
   export default {
@@ -63,22 +62,23 @@
       view: function () {
         this.loading = true
         const selected = this.selected
-        const url = `http://localhost:6010/${selected}`
-        axios.get(url)
-          .then((response) => {
-            let data
-            if (typeof response.data === 'string') {
-              data = response.data
-            } else {
-              data = JSON.stringify(response.data, undefined, 2)
-            }
-            this.result = `<pre class="text-success">${data}</pre>`
-            this.loading = false
-          })
-          .catch((error) => {
-            this.result = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`
-            this.loading = false
-          })
+        $.ajax({
+          type: 'GET',
+          url: `http://localhost:6010/${selected}`
+        }).done((value) => {
+          let data
+          if (typeof value === 'string') {
+            data = value
+          } else {
+            data = JSON.stringify(value, undefined, 2)
+          }
+          this.result = `<pre class="text-success">${data}</pre>`
+        }).fail((error) => {
+          console.log('error:', error)
+          this.result = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`
+        }).always(() => {
+          this.loading = false
+        })
       },
       download: function () {
         const selected = this.selected
