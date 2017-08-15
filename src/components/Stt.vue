@@ -3,7 +3,7 @@
     <myheader></myheader>
     <div v-show="loading"><span id="loading-view"></span></div>
     <div class="container-fluid" style="margin: 15px 0 0 0">
-      <div v-if="error" class="alert alert-danger" role="alert"><p>エラーが発生しました。<br>{{error}}</p></div>
+      <div v-if="errorMessage" class="alert alert-danger" role="alert"><p>ERROR: {{errorMessage}}</p></div>
       <form id="modelFormId">
         <div class="btn-group btn-group-justified" role="group">
           <div class="btn-group" role="group">
@@ -12,23 +12,23 @@
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create
             </button>
           </div>
-          <div class="btn-group" role="group">
+          <div type="button" class="btn-group" role="group">
             <button type="button" id="trainBtnId" class="btn btn-default">
               <span class="glyphicon glyphicon-book" aria-hidden="true"></span> Train
             </button>
           </div>
-          <div class="btn-group" role="group">
-            <button type="button" id="sttStartId" class="btn btn-default">
+          <div type="button" class="btn-group" role="group">
+            <button v-bind:disabled="stream !== null" type="button" class="btn btn-default" @click="startRecognize()">
               <span class="glyphicon glyphicon-record" aria-hidden="true"></span> Recognize
             </button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" id="sttStopId" class="btn btn-default">
+            <button v-bind:disabled="stream === null" type="button" class="btn btn-default" @click="stopRecognize()">
               <span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
             </button>
           </div>
           <div class="btn-group" role="group">
-            <button type="button" v-bind:disabled="customization_id === 'default'" class="btn btn-default"
+            <button v-bind:disabled="customization_id === 'default'" type="button" class="btn btn-default"
                     @click="$refs.sttDeleteModel.init()"
                     data-toggle="modal" data-target="#sttDeleteModelModalId">
               <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete model
@@ -100,6 +100,7 @@
 </template>
 
 <script>
+  import WatsonSpeech from 'watson-speech'
   import myheader from './Header'
   import sttCreateModel from './SttCreateModel'
   import sttDeleteModel from './SttDeleteModel'
@@ -116,13 +117,45 @@
         customizations: null,
         customization: null,
         customization_id: 'default',
-        error: null
+        errorMessage: '',
+        stream: null
       }
     },
     created: function () {
       this.getCustomizations(true)
     },
     methods: {
+      startRecognize: function () {
+        // Watson Speech to text と Text to Speech を使用するための情報を取得する。
+        $.ajax({
+          type: 'GET',
+          url: 'http://localhost:6010/stt2/token'
+        }).done((value) => {
+          const param = {
+            token: value.token,
+            model: value.model,
+            outputElement: '#outputId' // CSS selector or DOM Element
+          }
+          if (this.customization_id !== 'default') {
+            param.customization_id = this.customization_id
+          }
+          // Speech to Text を呼び出す。
+          this.stream = WatsonSpeech.SpeechToText.recognizeMicrophone(param)
+          this.stream.on('error', (error) => {
+            console.log('error:', error)
+            this.errorMessage = 'Speech to Text のストリーム操作でエラーが発生しました。'
+          })
+        }).fail((error) => {
+          console.log('error:', error)
+          this.errorMessage = 'Speech to Text の呼び出しに失敗しました。'
+        })
+      },
+      stopRecognize: function () {
+        if (this.stream) {
+          this.stream.stop()
+          this.stream = null
+        }
+      },
       getCustomizations: function () {
         this.loading = true
         $.ajax({
@@ -133,7 +166,7 @@
           this.customization_id = 'default'
         }).fail((error) => {
           console.log('error:', error)
-          this.error = error
+          this.errorMessage = 'カスタムモデル一覧の取得に失敗しました。'
           this.customizations = null
         }).always(() => {
           this.loading = false
@@ -157,6 +190,7 @@
             }
           }).fail((error) => {
             console.log('error:', error)
+            this.errorMessage = 'カスタムモデルの取得に失敗しました。'
             this.customization = null
           }).always(() => {
             this.loading = false
