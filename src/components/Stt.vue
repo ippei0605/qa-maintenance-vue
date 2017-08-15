@@ -113,6 +113,7 @@
 
 <script>
   import WatsonSpeech from 'watson-speech'
+  import context from '../context'
   import myheader from './Header'
   import sttCreateModel from './SttCreateModel'
   import sttDeleteModel from './SttDeleteModel'
@@ -143,7 +144,7 @@
         // Watson Speech to text と Text to Speech を使用するための情報を取得する。
         $.ajax({
           type: 'GET',
-          url: 'http://localhost:6010/stt2/token'
+          url: `${context.SERVER}stt/token`
         }).done((value) => {
           const param = {
             token: value.token,
@@ -176,7 +177,7 @@
         this.loading = true
         $.ajax({
           type: 'GET',
-          url: 'http://localhost:6010/stt2'
+          url: `${context.SERVER}stt`
         }).done((value) => {
           this.customizations = value
           this.customization_id = 'default'
@@ -196,7 +197,7 @@
           this.loading = true
           $.ajax({
             type: 'GET',
-            url: `http://localhost:6010/stt2/${this.customization_id}`
+            url: `${context.SERVER}stt/${this.customization_id}`
           }).done((value) => {
             this.customization = value
             for (let i in this.customizations) {

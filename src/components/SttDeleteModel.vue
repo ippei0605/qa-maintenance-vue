@@ -36,6 +36,8 @@
 </template>
 
 <script>
+  import context from '../context'
+
   export default {
     name: 'sttCreateModel',
     data () {
@@ -57,7 +59,7 @@
         this.loading = true
         $.ajax({
           type: 'POST',
-          url: `http://localhost:6010/stt2/${this.customization_id}/delete`
+          url: `${context.SERVER}stt/${this.customization_id}/delete`
         }).done((value) => {
           this.result = value
           this.$emit('update')

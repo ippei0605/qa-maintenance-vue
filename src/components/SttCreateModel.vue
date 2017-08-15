@@ -51,6 +51,8 @@
 </template>
 
 <script>
+  import context from '../context'
+
   export default {
     name: 'sttCreateModel',
     data () {
@@ -73,7 +75,7 @@
         this.loading = true
         $.ajax({
           type: 'POST',
-          url: `http://localhost:6010/stt2`,
+          url: `${context.SERVER}stt`,
           data: {
             name: this.name,
             description: this.description

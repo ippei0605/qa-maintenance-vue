@@ -24,6 +24,8 @@
 </template>
 
 <script>
+  import context from '../context'
+
   export default {
     name: 'sttTrain',
     data () {
@@ -46,7 +48,7 @@
         this.loading = true
         $.ajax({
           type: 'POST',
-          url: `http://localhost:6010/stt2/${this.customization_id}/train`
+          url: `${context.SERVER}stt/${this.customization_id}/train`
         }).done((value) => {
           this.result = value
           this.$emit('update')

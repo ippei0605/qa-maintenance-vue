@@ -35,6 +35,7 @@
 </template>
 
 <script>
+  import context from '../context'
   import myheader from './Header'
 
   export default {
@@ -64,7 +65,7 @@
         const selected = this.selected
         $.ajax({
           type: 'GET',
-          url: `http://localhost:6010/${selected}`
+          url: `${context.SERVER}${selected}`
         }).done((value) => {
           let data
           if (typeof value === 'string') {
@@ -87,7 +88,7 @@
           'export-training-csv': 'classifier.csv',
           'export-corpus': 'corpus.txt'
         }
-        this.file.url = `http://localhost:6010/${selected}`
+        this.file.url = `${context.SERVER}${selected}`
         this.file.name = fileMap[selected]
       }
     }

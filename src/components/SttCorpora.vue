@@ -50,6 +50,8 @@
 </template>
 
 <script>
+  import context from '../context'
+
   export default {
     name: 'sttCorpora',
     data () {
@@ -91,7 +93,7 @@
           formdata.append('corpus-txt', this.uploadFile)
           $.ajax({
             type: 'POST',
-            url: `http://localhost:6010/stt2/${this.customization.model.customization_id}/corpus`,
+            url: `${context.SERVER}stt/${this.customization.model.customization_id}/corpus`,
             data: formdata,
             cache: false,
             contentType: false,
@@ -114,7 +116,7 @@
           this.loading = true
           $.ajax({
             type: 'POST',
-            url: `http://localhost:6010/stt2/${this.customization.model.customization_id}/corpus/${this.selected}/delete`,
+            url: `${context.SERVER}stt/${this.customization.model.customization_id}/corpus/${this.selected}/delete`,
             cache: false,
             contentType: false,
             processData: false,

@@ -51,6 +51,8 @@
 </template>
 
 <script>
+  import context from '../context'
+
   export default {
     name: 'sttWord',
     data () {
@@ -92,7 +94,7 @@
           formdata.append('word-json', this.uploadFile)
           $.ajax({
             type: 'POST',
-            url: `http://localhost:6010/stt2/${this.customization.model.customization_id}/word`,
+            url: `${context.SERVER}stt/${this.customization.model.customization_id}/word`,
             data: formdata,
             cache: false,
             contentType: false,
@@ -115,7 +117,7 @@
           this.loading = true
           $.ajax({
             type: 'POST',
-            url: `http://localhost:6010/stt2/${this.customization.model.customization_id}/word/${this.selected}/delete`,
+            url: `${context.SERVER}stt/${this.customization.model.customization_id}/word/${this.selected}/delete`,
             cache: false,
             contentType: false,
             processData: false,
