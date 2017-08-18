@@ -42,6 +42,9 @@
         messageClass: 'text-success'
       }
     },
+    created () {
+      auth.logout()
+    },
     methods: {
       login () {
         this.loading = true
@@ -51,11 +54,13 @@
           data: {
             username: this.username,
             password: this.password
-          }
+          },
+          dataType: 'json'
         }).done((value) => {
-          console.log('value:', value)
-          auth.login()
-          sessionStorage.setItem('qa-maintenance', true)
+          auth.login({
+            username: this.username,
+            token: value.access_token
+          })
           this.$router.push(this.$route.query.redirect)
         }).fail((error) => {
           console.log('error:', error)

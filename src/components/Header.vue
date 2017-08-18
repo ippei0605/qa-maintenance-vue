@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="myheader">
     <header>
       <div class="container-fluid text-center">
         <h1>Q&A Maintenance</h1>
@@ -28,15 +28,39 @@
                 <router-link to="/stt">Speech to Text</router-link>
               </li>
             </ul>
-            <p class="navbar-text navbar-right">ようこそ ゲスト さん。</p>
+            <ul class="nav navbar-nav navbar-right">
+              <li><p class="navbar-text">ようこそ ゲスト さん。 </p></li>
+              <li>
+                <a data-toggle="modal" data-target="#logoutModalId">
+                  <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
     </header>
+    <logout></logout>
   </div>
 </template>
 
+<script>
+  import logout from '@/components/logout'
+
+  export default {
+    name: 'myheader',
+    components: {
+      logout
+    }
+  }
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  a {
+    color: #999999
+  }
+
   a.active {
     color: #FFFFFF
   }

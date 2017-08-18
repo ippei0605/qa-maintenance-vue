@@ -1,10 +1,19 @@
 const auth = {
-  loggedIn: false,
-  login () {
-    this.loggedIn = true
+  loggedIn () {
+    const text = sessionStorage.getItem('qa-maintenance')
+    const value = JSON.parse(text)
+    if (value && value.token) {
+      return true
+    } else {
+      return false
+    }
+  },
+  login (value) {
+    const text = JSON.stringify(value)
+    sessionStorage.setItem('qa-maintenance', text)
   },
   logout () {
-    this.loggedIn = false
+    sessionStorage.removeItem('qa-maintenance')
   }
 }
 

@@ -6,6 +6,7 @@ import Answer from '@/components/Answer'
 import Nlc from '@/components/Nlc'
 import Stt from '@/components/Stt'
 import Auth from '@/components/Auth'
+import Thanks from '@/components/Thanks'
 
 Vue.use(Router)
 
@@ -32,12 +33,16 @@ const routes = [
     path: '/stt',
     name: 'Stt',
     component: Stt
+  }, {
+    path: '/thanks',
+    name: 'Thanks',
+    component: Thanks
   }
 ]
 
 const router = new Router({routes})
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth) && !Auth.loggedIn) {
+  if (to.matched.some(record => record.meta.requiresAuth) && !Auth.loggedIn()) {
     next({path: '/login', query: {redirect: to.fullPath}})
   } else {
     next()
