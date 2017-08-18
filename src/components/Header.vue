@@ -18,9 +18,6 @@
           </div>
           <div class="collapse navbar-collapse" id="navbarEexample7">
             <ul class="nav navbar-nav">
-              <li :class="$route.path === '/answer' ? 'active' : ''">
-                <router-link to="/answer">Answer</router-link>
-              </li>
               <li :class="$route.path === '/nlc' ? 'active' : ''">
                 <router-link to="/nlc">Natural Language Classifier</router-link>
               </li>
@@ -29,7 +26,7 @@
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><p class="navbar-text">ようこそ ゲスト さん。 </p></li>
+              <li><p class="navbar-text">ようこそ {{username}} さん</p></li>
               <li>
                 <a data-toggle="modal" data-target="#logoutModalId">
                   <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout
@@ -46,11 +43,21 @@
 
 <script>
   import logout from '@/components/logout'
+  import auth from '@/components/Auth'
 
   export default {
     name: 'myheader',
     components: {
       logout
+    },
+    data () {
+      return {
+        username: ''
+      }
+    },
+    created () {
+      const username = auth.getUsername().split('@')
+      this.username = username[0]
     }
   }
 </script>

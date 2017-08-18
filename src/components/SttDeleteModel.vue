@@ -10,12 +10,14 @@
           </div>
           <div class="modal-body">
             <p>「{{customization_id}}」を削除します。</p>
+            <br>
+            <br>
             <pre v-if="result" :class="resultClass">{{result}}</pre>
           </div>
           <div class="modal-footer">
             <div v-if="result">
               <div class="text-right">
-                <button class="btn btn-default" data-dismiss="modal">Close</button>
+                <button class="btn btn-default" @click="close()" data-dismiss="modal">Close</button>
               </div>
             </div>
             <div v-else>
@@ -62,7 +64,6 @@
           url: `${context.SERVER}stt/${this.customization_id}/delete`
         }).done((value) => {
           this.result = value
-          this.$emit('update')
         }).fail((error) => {
           console.log('error:', error)
           this.resultClass = 'text-danger'
@@ -70,6 +71,9 @@
         }).always(() => {
           this.loading = false
         })
+      },
+      close () {
+        this.$emit('update')
       }
     }
   }

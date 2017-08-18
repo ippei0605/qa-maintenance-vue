@@ -137,7 +137,7 @@
       }
     },
     created () {
-      this.getCustomizations(true)
+      this.getCustomizations()
     },
     methods: {
       startRecognize () {
@@ -181,6 +181,7 @@
         }).done((value) => {
           this.customizations = value
           this.customization_id = 'default'
+          this.customization = null
         }).fail((error) => {
           console.log('error:', error)
           this.errorMessage = 'カスタムモデル一覧の取得に失敗しました。'

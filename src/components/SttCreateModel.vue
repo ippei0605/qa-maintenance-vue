@@ -30,7 +30,7 @@
           <div class="modal-footer">
             <div v-if="result">
               <div class="text-right">
-                <button class="btn btn-default" data-dismiss="modal">Close</button>
+                <button class="btn btn-default" @click="close()" data-dismiss="modal">Close</button>
               </div>
             </div>
             <div v-else>
@@ -82,7 +82,6 @@
           }
         }).done((value) => {
           this.result = value
-          this.$emit('update')
         }).fail((error) => {
           console.log('error:', error)
           this.resultClass = 'text-danger'
@@ -90,6 +89,9 @@
         }).always(() => {
           this.loading = false
         })
+      },
+      close () {
+        this.$emit('update')
       }
     }
   }

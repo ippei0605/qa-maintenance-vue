@@ -1,12 +1,15 @@
 const auth = {
-  loggedIn () {
+  getSessionObject () {
     const text = sessionStorage.getItem('qa-maintenance')
-    const value = JSON.parse(text)
-    if (value && value.token) {
-      return true
-    } else {
-      return false
-    }
+    return JSON.parse(text)
+  },
+  loggedIn () {
+    const value = this.getSessionObject()
+    return value && value.token
+  },
+  getUsername () {
+    const value = this.getSessionObject()
+    return value && value.username ? value.username : 'Guest'
   },
   login (value) {
     const text = JSON.stringify(value)

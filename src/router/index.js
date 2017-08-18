@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
-import Answer from '@/components/Answer'
 import Nlc from '@/components/Nlc'
 import Stt from '@/components/Stt'
 import Auth from '@/components/Auth'
@@ -19,12 +18,9 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    meta: {requiresAuth: true}
-  }, {
-    path: '/answer',
-    name: 'Answer',
-    component: Answer,
-    meta: {requiresAuth: true}
+    meta: {
+      requiresAuth: true
+    }
   }, {
     path: '/nlc',
     name: 'Nlc',
@@ -32,7 +28,10 @@ const routes = [
   }, {
     path: '/stt',
     name: 'Stt',
-    component: Stt
+    component: Stt,
+    meta: {
+      requiresAuth: true
+    }
   }, {
     path: '/thanks',
     name: 'Thanks',

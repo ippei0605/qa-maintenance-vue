@@ -9,6 +9,8 @@
           </div>
           <div class="modal-body">
             <p>ログアウトします。よろしいですか？</p>
+            <br>
+            <br>
           </div>
           <div class="modal-footer">
             <div class="row">
