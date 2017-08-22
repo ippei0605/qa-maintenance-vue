@@ -41,7 +41,7 @@
   import context from '../context'
 
   export default {
-    name: 'sttCreateModel',
+    name: 'sttDeleteModel',
     data () {
       return {
         loading: false,

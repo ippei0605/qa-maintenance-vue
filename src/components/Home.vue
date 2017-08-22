@@ -65,15 +65,10 @@
         const selected = this.selected
         $.ajax({
           type: 'GET',
-          url: `${context.SERVER}${selected}`
+          url: `${context.SERVER}${selected}`,
+          dataType: 'text'
         }).done((value) => {
-          let data
-          if (typeof value === 'string') {
-            data = value
-          } else {
-            data = JSON.stringify(value, undefined, 2)
-          }
-          this.result = `<pre class="text-success">${data}</pre>`
+          this.result = `<pre class="text-success">${value}</pre>`
         }).fail((error) => {
           console.log('error:', error)
           this.result = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`

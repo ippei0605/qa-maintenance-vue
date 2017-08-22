@@ -1,30 +1,17 @@
 <template>
-  <div id="stt-create-model">
+  <div id="nlc-create-classifier">
     <div v-show="loading"><span id="loading-view"></span></div>
-    <div class="modal fade" id="sttCreateModelModalId" tabindex="-1">
+    <div class="modal fade" id="nlcCreateClassifierModalId" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button class="close" data-dismiss="modal"><span>×</span></button>
-            <h4 class="modal-title">Create Custom Model</h4>
+            <h4 class="modal-title">Create Classifier</h4>
           </div>
           <div class="modal-body">
-            <p>「ja-JP_BroadbandModel」をベースにカスタムモデルを作成します。</p>
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-3 control-label">name</label>
-                <div class="col-sm-9">
-                  <input class="form-control" v-model="name" placeholder="名前">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">description</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control"
-                         v-model="description" placeholder="説明">
-                </div>
-              </div>
-            </form>
+            <p v-if="uploadFile">「{{uploadFile.name}}」をアップロードして Classifier を新規作成します。</p>
+            <br>
+            <br>
             <pre v-if="result" :class="resultClass">{{result}}</pre>
           </div>
           <div class="modal-footer">
@@ -39,7 +26,7 @@
                   <button class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
                 <div class="col-sm-6 text-right">
-                  <button class="btn btn-primary" @click="createModel()">Create</button>
+                  <button class="btn btn-primary" @click="createClassifier()">Create</button>
                 </div>
               </div>
             </div>
@@ -51,35 +38,35 @@
 </template>
 
 <script>
-  import context from '../context'
+  import context from '@/context'
 
   export default {
-    name: 'sttCreateModel',
+    name: 'nlcCreateClassifier',
     data () {
       return {
         loading: false,
-        name: '',
-        description: '',
+        uploadFile: null,
         result: null,
         resultClass: 'text-success'
       }
     },
     methods: {
-      init () {
-        this.name = ''
-        this.description = ''
+      init (uploadFile) {
+        this.uploadFile = uploadFile
         this.result = null
         this.resultClass = 'text-success'
       },
-      createModel () {
+      createClassifier () {
         this.loading = true
+        const formdata = new FormData()
+        formdata.append('training-csv', this.uploadFile)
         $.ajax({
           type: 'POST',
-          url: `${context.SERVER}stt`,
-          data: {
-            name: this.name,
-            description: this.description
-          },
+          url: `${context.SERVER}nlc/`,
+          data: formdata,
+          cache: false,
+          contentType: false,
+          processData: false,
           dataType: 'json'
         }).done((value) => {
           this.result = value

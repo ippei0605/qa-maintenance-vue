@@ -174,12 +174,13 @@
         }
       },
       getCustomizations () {
+        this.errorMessage = ''
         this.loading = true
         $.ajax({
           type: 'GET',
           url: `${context.SERVER}stt`
         }).done((value) => {
-          this.customizations = value
+          this.customizations = value.customizations
           this.customization_id = 'default'
           this.customization = null
         }).fail((error) => {
@@ -201,7 +202,7 @@
             url: `${context.SERVER}stt/${this.customization_id}`
           }).done((value) => {
             this.customization = value
-            for (let i in this.customizations) {
+            for (const i in this.customizations) {
               if (this.customizations[i].customization_id === this.customization.model.customization_id) {
                 this.customizations[i] = this.customization.model
                 break

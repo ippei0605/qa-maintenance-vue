@@ -24,7 +24,10 @@ const routes = [
   }, {
     path: '/nlc',
     name: 'Nlc',
-    component: Nlc
+    component: Nlc,
+    meta: {
+      requiresAuth: true
+    }
   }, {
     path: '/stt',
     name: 'Stt',
