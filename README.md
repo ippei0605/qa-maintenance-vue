@@ -57,7 +57,7 @@ $ npm install --save-dev watson-speech
 
 ## プログラミング
 * index.html  CDNにホストされた Bootstrap3 を使用
-  - https://github.com/ippei0605/qa-maintenance/blob/master/index.html#L5-L17
+  - https://github.com/ippei0605/qa-maintenance-vue/blob/master/index.html#L5-L17
 * .eslintrc.js  jQuery が前提となるので、$ を参照できるように設定 (Vue 推奨の Axios は使用せず)
   - https://github.com/ippei0605/qa-maintenance/blob/master/.eslintrc.js#L27-L30
 * src
