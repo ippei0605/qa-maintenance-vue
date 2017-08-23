@@ -1,4 +1,4 @@
-# Q&A Maintenance クライアントアプり
+# Q&A Maintenance クライアントアプリ
 
 ## はじめに
 Q&A Maintenance のクライアントアプリを Vue.js 2.0 で開発します。
