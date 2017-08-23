@@ -56,8 +56,10 @@ $ npm install --save-dev watson-speech
 * https://github.com/ippei0605/qa-maintenance/blob/master/package.json#L80
 
 ## プログラミング
-* index.html
+* index.html  CDNにホストされた Bootstrap3 を使用
   - https://github.com/ippei0605/qa-maintenance/blob/master/index.html#L5-L17
+* .eslintrc.js  jQuery が前提となるので、$ を参照できるように設定 (Vue 推奨の Axios は使用せず)
+  - https://github.com/ippei0605/qa-maintenance/blob/master/.eslintrc.js#L27-L30
 * src
   - context.js  開発と本番の切替え定義、、、コメントアウトが必要のため悩み中
       - https://github.com/ippei0605/qa-maintenance-vue/blob/master/src/context.js
