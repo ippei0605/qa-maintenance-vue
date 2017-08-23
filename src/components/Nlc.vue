@@ -17,7 +17,7 @@
         </div>
       </form>
       <br>
-      <form>
+      <form v-on:submit.prevent="classify()">
         <table class="table table-bordered table-striped table-hover">
           <thead>
           <tr>
@@ -52,7 +52,7 @@
         <div class="input-group">
           <input v-model="text" type="text" class="form-control" placeholder="テキストを入力してください。">
           <span class="input-group-btn">
-            <button v-bind:disabled="!classifierId" type="submit" class="btn btn-default" @click="classify()">
+            <button v-bind:disabled="!classifierId" type="submit" class="btn btn-default">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Classify
             </button>
         </span>
@@ -114,7 +114,6 @@
         classifierId: '',
         text: '',
         result: null,
-        file: null,
         fileId: 0,
         uploadFile: null
       }
@@ -159,23 +158,25 @@
         })
       },
       classify () {
-        this.loading = true
-        $.ajax({
-          type: 'GET',
-          url: `${context.SERVER}nlc/${this.classifierId}/classify`,
-          data: {
-            'text': this.text,
-            'now': this.getNow()
-          }
-        }).done((value) => {
-          this.result = value
-        }).fail((error) => {
-          console.log('error:', error)
-          this.errorMessage = 'クラス分類の実行に失敗しました。'
-        }).always(() => {
-          this.text = ''
-          this.loading = false
-        })
+        if (this.text) {
+          this.loading = true
+          $.ajax({
+            type: 'GET',
+            url: `${context.SERVER}nlc/${this.classifierId}/classify`,
+            data: {
+              'text': this.text,
+              'now': this.getNow()
+            }
+          }).done((value) => {
+            this.result = value
+          }).fail((error) => {
+            console.log('error:', error)
+            this.errorMessage = 'クラス分類の実行に失敗しました。'
+          }).always(() => {
+            this.text = ''
+            this.loading = false
+          })
+        }
       },
       createClassifier () {
         if (this.uploadFile) {

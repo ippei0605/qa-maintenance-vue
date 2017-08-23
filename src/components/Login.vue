@@ -64,8 +64,8 @@
           this.$router.push(this.$route.query.redirect)
         }).fail((error) => {
           console.log('error:', error)
-          const json = JSON.parse(error.responseText)
-          this.message = `ERROR: ${json.error_description}`
+          const reason = error.responseText && error.responseText.error_description ? error.responseText.error_description : 'サーバー接続エラー'
+          this.message = `ERROR: ${reason}`
           this.messageClass = 'text-danger'
         }).always(() => {
           this.loading = false

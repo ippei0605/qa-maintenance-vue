@@ -26,8 +26,26 @@
             </span>
           </div>
           <br>
-          <div id="resultId"></div>
           <div v-html="result"></div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">import data</div>
+        <div class="panel-body">
+          <p>データベース「answer」にデータをインポートします。</p>
+          <form>
+            <div class="input-group">
+              <span class="input-group-addon">JSON File</span>
+              <input type="file" @change="selectedFile" :key="fileId" name="answer-json" class="form-control">
+              <span class="input-group-btn">
+            <button @click="importData()" type="button" class="btn btn-primary">
+              <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Import
+            </button>
+            </span>
+            </div>
+          </form>
+          <br>
+          <div v-html="importResult"></div>
         </div>
       </div>
     </div>
@@ -56,10 +74,18 @@
           url: 'http://localhost:6010/export-answer',
           name: 'answer.json'
         },
-        result: ''
+        result: '',
+        importResult: '',
+        fileId: 0,
+        uploadFile: null
       }
     },
     methods: {
+      selectedFile (e) {
+        e.preventDefault()
+        const files = e.target.files
+        this.uploadFile = files[0]
+      },
       view () {
         this.loading = true
         const selected = this.selected
@@ -85,6 +111,29 @@
         }
         this.file.url = `${context.SERVER}${selected}`
         this.file.name = fileMap[selected]
+      },
+      importData () {
+        if (this.uploadFile) {
+          this.loading = true
+          const formdata = new FormData()
+          formdata.append('answer-json', this.uploadFile)
+          $.ajax({
+            type: 'POST',
+            url: `${context.SERVER}delete-insert-answer`,
+            data: formdata,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: 'json'
+          }).done((value) => {
+            this.importResult = `<pre class="text-success">${JSON.stringify(value, undefined, 2)}</pre>`
+          }).fail((error) => {
+            console.log('error:', error)
+            this.importResult = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`
+          }).always(() => {
+            this.loading = false
+          })
+        }
       }
     }
   }
