@@ -63,9 +63,15 @@ $ npm install --save-dev watson-speech
       - https://github.com/ippei0605/qa-maintenance-vue/blob/master/src/context.js
   - App.vue   スタイルを定義
       - https://github.com/ippei0605/qa-maintenance-vue/blob/master/src/App.vue
+* src/assets
+  - watson_black_animate.gif  gif アニメを配置
 * src/router
   - index.js  vue-router の設定
       - https://github.com/ippei0605/qa-maintenance-vue/blob/master/src/router/index.js
+* src/components
+  - *.vue     様々な Vue コンポーネントを開発
+  - Auth.js   認証機能、現在はブラウザの Session Storage にトークンがあるかないかで判定している。要検討。
+    - https://github.com/ippei0605/qa-maintenance-vue/blob/master/src/components/Auth.js#L6-L9
       
 ## 参考
 * Vue.js を vue-cli を使ってシンプルにはじめてみる
