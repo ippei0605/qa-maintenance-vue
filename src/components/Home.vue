@@ -71,7 +71,7 @@
           {text: 'Speech to Text Corpus', value: 'export-corpus'}
         ],
         file: {
-          url: 'http://localhost:6010/export-answer',
+          url: `${context.SERVER}export-answer`,
           name: 'answer.json'
         },
         result: '',

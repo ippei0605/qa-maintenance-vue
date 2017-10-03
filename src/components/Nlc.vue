@@ -106,7 +106,7 @@
     components: {
       myheader, nlcCreateClassifier, nlcDeleteClassifier
     },
-    data: () => {
+    data () {
       return {
         loading: false,
         errorMessage: '',
