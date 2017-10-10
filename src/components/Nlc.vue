@@ -81,7 +81,10 @@
             </thead>
             <tbody>
             <tr v-for="item in result.table">
-              <td>{{item.class_name}}</td>
+              <td>{{item.class_name}}
+                <button type="button" class="btn btn-default btn-xs" @click="speech(item.message)">
+                  <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span></button>
+              </td>
               <td>{{item.message}}</td>
               <td class="text-right">{{parseFloat(item.confidence).toFixed(3)}}</td>
             </tr>
@@ -96,6 +99,7 @@
 </template>
 
 <script>
+  import WatsonSpeech from 'watson-speech'
   import context from '@/context'
   import myheader from '@/components/Header'
   import nlcCreateClassifier from '@/components/NlcCreateClassifier'
@@ -122,6 +126,24 @@
       this.getClassifiers()
     },
     methods: {
+      speech (text) {
+        $.ajax({
+          type: 'GET',
+          url: `${context.SERVER}tts/token`
+        }).done((value) => {
+          const params = {
+            text: text,
+            token: value.token,
+            voice: value.voice
+          }
+          WatsonSpeech.TextToSpeech.synthesize(params)
+        }).fail((error) => {
+          console.log('error:', error)
+          this.errorMessage = 'Text to Speech の呼び出しに失敗しました。'
+        }).always(() => {
+          return false
+        })
+      },
       selectedFile (e) {
         e.preventDefault()
         const files = e.target.files

@@ -16,13 +16,16 @@
             </button>
             <router-link to="/" :class="['navbar-brand', $route.path === '/' ? 'active' : '']">Home</router-link>
           </div>
-          <div class="collapse navbar-collapse" id="navbarEexample7">
+          <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               <li :class="$route.path === '/nlc' ? 'active' : ''">
                 <router-link to="/nlc">Natural Language Classifier</router-link>
               </li>
               <li :class="$route.path === '/stt' ? 'active' : ''">
                 <router-link to="/stt">Speech to Text</router-link>
+              </li>
+              <li :class="$route.path === '/tts' ? 'active' : ''">
+                <router-link to="/tts">Text to Speech</router-link>
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

@@ -94,8 +94,7 @@
           </div>
           <div class="col-sm-6">
             <h3><a @click="$refs.sttWord.init()" data-toggle="modal" data-target="#sttWordModalId">
-              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Word
-            </a>
+              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Word</a>
             </h3>
             <pre>{{JSON.stringify(customization.word, undefined, 2)}}</pre>
           </div>
