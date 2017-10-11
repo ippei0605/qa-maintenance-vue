@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/components/Login'
-import Home from '@/components/Home'
-import Nlc from '@/components/Nlc'
-import Stt from '@/components/Stt'
-import Tts from '@/components/Tts'
-import Auth from '@/components/Auth'
-import Thanks from '@/components/Thanks'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Login from '@/components/Login';
+import Home from '@/components/Home';
+import Nlc from '@/components/Nlc';
+import Stt from '@/components/Stt';
+import Tts from '@/components/Tts';
+import Auth from '@/components/Auth';
+import Thanks from '@/components/Thanks';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const routes = [
   {
@@ -48,14 +48,14 @@ const routes = [
     name: 'Thanks',
     component: Thanks
   }
-]
+];
 
-const router = new Router({routes})
+const router = new Router({routes});
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth) && !Auth.loggedIn()) {
-    next({path: '/login', query: {redirect: to.fullPath}})
+    next({path: '/login', query: {redirect: to.fullPath}});
   } else {
-    next()
+    next();
   }
-})
-export default router
+});
+export default router;

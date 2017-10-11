@@ -53,8 +53,8 @@
 </template>
 
 <script>
-  import context from '../context'
-  import myheader from './Header'
+  import context from '../context';
+  import myheader from './Header';
 
   export default {
     name: 'home',
@@ -78,45 +78,45 @@
         importResult: '',
         fileId: 0,
         uploadFile: null
-      }
+      };
     },
     methods: {
       selectedFile (e) {
-        e.preventDefault()
-        const files = e.target.files
-        this.uploadFile = files[0]
+        e.preventDefault();
+        const files = e.target.files;
+        this.uploadFile = files[0];
       },
       view () {
-        this.loading = true
-        const selected = this.selected
+        this.loading = true;
+        const selected = this.selected;
         $.ajax({
           type: 'GET',
           url: `${context.SERVER}${selected}`,
           dataType: 'text'
         }).done((value) => {
-          this.result = `<pre class="text-success">${value}</pre>`
+          this.result = `<pre class="text-success">${value}</pre>`;
         }).fail((error) => {
-          console.log('error:', error)
-          this.result = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`
+          console.log('error:', error);
+          this.result = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       },
       download () {
-        const selected = this.selected
+        const selected = this.selected;
         const fileMap = {
           'export-answer': 'answer.json',
           'export-training-csv': 'classifier.csv',
           'export-corpus': 'corpus.txt'
-        }
-        this.file.url = `${context.SERVER}${selected}`
-        this.file.name = fileMap[selected]
+        };
+        this.file.url = `${context.SERVER}${selected}`;
+        this.file.name = fileMap[selected];
       },
       importData () {
         if (this.uploadFile) {
-          this.loading = true
-          const formdata = new FormData()
-          formdata.append('answer-json', this.uploadFile)
+          this.loading = true;
+          const formdata = new FormData();
+          formdata.append('answer-json', this.uploadFile);
           $.ajax({
             type: 'POST',
             url: `${context.SERVER}delete-insert-answer`,
@@ -126,17 +126,17 @@
             processData: false,
             dataType: 'json'
           }).done((value) => {
-            this.importResult = `<pre class="text-success">${JSON.stringify(value, undefined, 2)}</pre>`
+            this.importResult = `<pre class="text-success">${JSON.stringify(value, undefined, 2)}</pre>`;
           }).fail((error) => {
-            console.log('error:', error)
-            this.importResult = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`
+            console.log('error:', error);
+            this.importResult = `<pre class="text-danger">${JSON.stringify(error, undefined, 2)}</pre>`;
           }).always(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         }
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

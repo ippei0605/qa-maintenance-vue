@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import context from '../context'
+  import context from '../context';
 
   export default {
     name: 'sttTrain',
@@ -33,35 +33,35 @@
         loading: false,
         result: null,
         resultClass: 'text-success'
-      }
+      };
     },
     props: {
       customization_id: String
     },
     methods: {
       init () {
-        this.result = null
-        this.resultClass = 'text-success'
-        this.trainModel()
+        this.result = null;
+        this.resultClass = 'text-success';
+        this.trainModel();
       },
       trainModel () {
-        this.loading = true
+        this.loading = true;
         $.ajax({
           type: 'POST',
           url: `${context.SERVER}stt/${this.customization_id}/train`
         }).done((value) => {
-          this.result = value
-          this.$emit('update')
+          this.result = value;
+          this.$emit('update');
         }).fail((error) => {
-          console.log('error:', error)
-          this.resultClass = 'text-danger'
-          this.result = error
+          console.log('error:', error);
+          this.resultClass = 'text-danger';
+          this.result = error;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

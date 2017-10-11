@@ -50,7 +50,7 @@
 </template>
 
 <script>
-  import context from '../context'
+  import context from '../context';
 
   export default {
     name: 'sttCorpora',
@@ -63,34 +63,34 @@
         options: null,
         fileId: 0,
         uploadFile: null
-      }
+      };
     },
     props: {
       customization: null
     },
     methods: {
       selectedFile (e) {
-        e.preventDefault()
-        const files = e.target.files
-        this.uploadFile = files[0]
+        e.preventDefault();
+        const files = e.target.files;
+        this.uploadFile = files[0];
       },
       init () {
-        this.result = null
-        this.resultClass = 'text-success'
-        this.selected = ''
-        this.options = [{text: '削除するコーパスを選択してください', value: ''}]
-        this.uploadFile = null
-        const corpora = this.customization.corpora
+        this.result = null;
+        this.resultClass = 'text-success';
+        this.selected = '';
+        this.options = [{text: '削除するコーパスを選択してください', value: ''}];
+        this.uploadFile = null;
+        const corpora = this.customization.corpora;
         corpora.forEach((corpus) => {
-          this.options.push({text: corpus.name, value: corpus.name})
-        })
-        ++this.fileId
+          this.options.push({text: corpus.name, value: corpus.name});
+        });
+        ++this.fileId;
       },
       addCorpus () {
         if (this.uploadFile) {
-          this.loading = true
-          const formdata = new FormData()
-          formdata.append('corpus-txt', this.uploadFile)
+          this.loading = true;
+          const formdata = new FormData();
+          formdata.append('corpus-txt', this.uploadFile);
           $.ajax({
             type: 'POST',
             url: `${context.SERVER}stt/${this.customization.model.customization_id}/corpus`,
@@ -100,20 +100,20 @@
             processData: false,
             dataType: 'text'
           }).done((value) => {
-            this.result = value
-            this.$emit('update')
+            this.result = value;
+            this.$emit('update');
           }).fail((error) => {
-            console.log('error:', error)
-            this.resultClass = 'text-danger'
-            this.result = error
+            console.log('error:', error);
+            this.resultClass = 'text-danger';
+            this.result = error;
           }).always(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         }
       },
       deleteCorpus () {
         if (this.selected) {
-          this.loading = true
+          this.loading = true;
           $.ajax({
             type: 'POST',
             url: `${context.SERVER}stt/${this.customization.model.customization_id}/corpus/${this.selected}/delete`,
@@ -122,19 +122,19 @@
             processData: false,
             dataType: 'text'
           }).done((value) => {
-            this.result = value
-            this.$emit('update')
+            this.result = value;
+            this.$emit('update');
           }).fail((error) => {
-            console.log('error:', error)
-            this.resultClass = 'text-danger'
-            this.result = error
+            console.log('error:', error);
+            this.resultClass = 'text-danger';
+            this.result = error;
           }).always(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         }
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

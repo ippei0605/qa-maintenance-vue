@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import context from '@/context'
+  import context from '@/context';
 
   export default {
     name: 'nlcDeleteClassifier',
@@ -48,34 +48,34 @@
         classifierId: '',
         result: null,
         resultClass: 'text-success'
-      }
+      };
     },
     methods: {
       init (classifierId) {
-        this.classifierId = classifierId
-        this.result = null
-        this.resultClass = 'text-success'
+        this.classifierId = classifierId;
+        this.result = null;
+        this.resultClass = 'text-success';
       },
       deleteClassifier () {
-        this.loading = true
+        this.loading = true;
         $.ajax({
           type: 'POST',
           url: `${context.SERVER}nlc/${this.classifierId}/delete`
         }).done((value) => {
-          this.result = value
+          this.result = value;
         }).fail((error) => {
-          console.log('error:', error)
-          this.resultClass = 'text-danger'
-          this.result = error
+          console.log('error:', error);
+          this.resultClass = 'text-danger';
+          this.result = error;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       },
       close () {
-        this.$emit('update')
+        this.$emit('update');
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

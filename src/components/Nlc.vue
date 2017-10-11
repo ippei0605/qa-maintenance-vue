@@ -71,6 +71,18 @@
           </div>
         </div>
         <div class="tab-pane" id="tableTabId">
+          <div class="row" style="margin: 10px 0">
+            <form class="form-horizontal">
+              <label class="col-sm-5 control-label">Text to Speech Customization Model</label>
+              <div class="col-sm-7">
+                <select class="form-control" v-model="selected">
+                  <option v-for="option in options" v-bind:value="option.value">
+                    {{ option.text }}
+                  </option>
+                </select>
+              </div>
+            </form>
+          </div>
           <table class="table table-bordered table-striped table-hover">
             <thead>
             <tr>
@@ -99,11 +111,11 @@
 </template>
 
 <script>
-  import WatsonSpeech from 'watson-speech'
-  import context from '@/context'
-  import myheader from '@/components/Header'
-  import nlcCreateClassifier from '@/components/NlcCreateClassifier'
-  import nlcDeleteClassifier from '@/components/NlcDeleteClassifier'
+  import WatsonSpeech from 'watson-speech';
+  import context from '@/context';
+  import myheader from '@/components/Header';
+  import nlcCreateClassifier from '@/components/NlcCreateClassifier';
+  import nlcDeleteClassifier from '@/components/NlcDeleteClassifier';
 
   export default {
     name: 'nlc',
@@ -119,13 +131,33 @@
         text: '',
         result: null,
         fileId: 0,
-        uploadFile: null
-      }
+        uploadFile: null,
+        options: [
+          {text: 'default', value: 'default'}
+        ],
+        selected: 'default'
+      };
     },
     created () {
-      this.getClassifiers()
+      this.getClassifiers();
+      this.getTtsCustomizations();
     },
     methods: {
+      getTtsCustomizations () {
+        this.errorMessage = '';
+        $.ajax({
+          type: 'GET',
+          url: `${context.SERVER}tts`
+        }).done((value) => {
+          value.customizations.forEach((item) => {
+            this.options.push({text: item.name, value: item.customization_id});
+          });
+        }).fail((error) => {
+          console.log('error:', error);
+          this.errorMessage = 'Text to Speech カスタムモデル一覧の取得に失敗しました。';
+          this.customizations = null;
+        });
+      },
       speech (text) {
         $.ajax({
           type: 'GET',
@@ -135,53 +167,56 @@
             text: text,
             token: value.token,
             voice: value.voice
+          };
+          if (this.selected !== 'default') {
+            params.customization_id = this.selected;
           }
-          WatsonSpeech.TextToSpeech.synthesize(params)
+          WatsonSpeech.TextToSpeech.synthesize(params);
         }).fail((error) => {
-          console.log('error:', error)
-          this.errorMessage = 'Text to Speech の呼び出しに失敗しました。'
+          console.log('error:', error);
+          this.errorMessage = 'Text to Speech の呼び出しに失敗しました。';
         }).always(() => {
-          return false
-        })
+          return false;
+        });
       },
       selectedFile (e) {
-        e.preventDefault()
-        const files = e.target.files
-        this.uploadFile = files[0]
+        e.preventDefault();
+        const files = e.target.files;
+        this.uploadFile = files[0];
       },
       getNow () {
-        const now = new Date()
+        const now = new Date();
         return now.getFullYear() + '年' +
           (now.getMonth() + 1) + '月' +
           now.getDate() + '日 ' +
           now.getHours() + '時' +
           now.getMinutes() + '分' +
-          now.getSeconds() + '秒'
+          now.getSeconds() + '秒';
       },
       getClassifiers () {
-        this.result = ''
-        this.errorMessage = ''
-        this.loading = true
+        this.result = '';
+        this.errorMessage = '';
+        this.loading = true;
         $.ajax({
           type: 'GET',
           url: `${context.SERVER}nlc`
         }).done((value) => {
-          this.classifiers = value
+          this.classifiers = value;
           if (value && value.length > 0) {
-            this.classifierId = value[0].classifier_id
+            this.classifierId = value[0].classifier_id;
           }
         }).fail((error) => {
-          console.log('error:', error)
-          this.errorMessage = 'Classifier 一覧の取得に失敗しました。'
-          this.classifiers = null
+          console.log('error:', error);
+          this.errorMessage = 'Classifier 一覧の取得に失敗しました。';
+          this.classifiers = null;
         }).always(() => {
-          this.loading = false
-          ++this.fileId
-        })
+          this.loading = false;
+          ++this.fileId;
+        });
       },
       classify () {
         if (this.text) {
-          this.loading = true
+          this.loading = true;
           $.ajax({
             type: 'GET',
             url: `${context.SERVER}nlc/${this.classifierId}/classify`,
@@ -190,24 +225,24 @@
               'now': this.getNow()
             }
           }).done((value) => {
-            this.result = value
+            this.result = value;
           }).fail((error) => {
-            console.log('error:', error)
-            this.errorMessage = 'クラス分類の実行に失敗しました。'
+            console.log('error:', error);
+            this.errorMessage = 'クラス分類の実行に失敗しました。';
           }).always(() => {
-            this.text = ''
-            this.loading = false
-          })
+            this.text = '';
+            this.loading = false;
+          });
         }
       },
       createClassifier () {
         if (this.uploadFile) {
-          this.$refs.nlcCreateClassifier.init(this.uploadFile)
-          $('#nlcCreateClassifierModalId').modal('show')
+          this.$refs.nlcCreateClassifier.init(this.uploadFile);
+          $('#nlcCreateClassifierModalId').modal('show');
         }
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

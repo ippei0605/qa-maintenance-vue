@@ -45,8 +45,8 @@
 </template>
 
 <script>
-  import logout from '@/components/logout'
-  import auth from '@/components/Auth'
+  import logout from '@/components/logout';
+  import auth from '@/components/Auth';
 
   export default {
     name: 'myheader',
@@ -56,13 +56,13 @@
     data () {
       return {
         username: ''
-      }
+      };
     },
     created () {
-      const username = auth.getUsername().split('@')
-      this.username = username[0]
+      const username = auth.getUsername().split('@');
+      this.username = username[0];
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -29,17 +29,17 @@
 </template>
 
 <script>
-  import auth from '@/components/Auth'
+  import auth from '@/components/Auth';
 
   export default {
     name: 'logout',
     methods: {
       logout () {
-        auth.logout()
-        this.$router.push('/thanks')
+        auth.logout();
+        this.$router.push('/thanks');
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

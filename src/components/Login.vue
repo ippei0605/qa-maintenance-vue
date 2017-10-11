@@ -28,8 +28,8 @@
 </template>
 
 <script>
-  import auth from '@/components/Auth'
-  import context from '@/context'
+  import auth from '@/components/Auth';
+  import context from '@/context';
 
   export default {
     name: 'login',
@@ -40,14 +40,14 @@
         password: '',
         message: '　',
         messageClass: 'text-success'
-      }
+      };
     },
     created () {
-      auth.logout()
+      auth.logout();
     },
     methods: {
       login () {
-        this.loading = true
+        this.loading = true;
         $.ajax({
           type: 'POST',
           url: `${context.SERVER}login`,
@@ -60,19 +60,19 @@
           auth.login({
             username: this.username,
             token: value.access_token
-          })
-          this.$router.push(this.$route.query.redirect)
+          });
+          this.$router.push(this.$route.query.redirect);
         }).fail((error) => {
-          console.log('error:', error)
-          const reason = error.responseText && error.responseText.error_description ? error.responseText.error_description : 'サーバー接続エラー'
-          this.message = `ERROR: ${reason}`
-          this.messageClass = 'text-danger'
+          console.log('error:', error);
+          const reason = error.responseText && error.responseText.error_description ? error.responseText.error_description : 'サーバー接続エラー';
+          this.message = `ERROR: ${reason}`;
+          this.messageClass = 'text-danger';
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

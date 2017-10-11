@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import context from '../context'
+  import context from '../context';
 
   export default {
     name: 'ttsCreateModel',
@@ -86,18 +86,18 @@
           {text: 'it-IT', value: 'it-IT'},
           {text: 'pt-BR', value: 'pt-BR'}
         ]
-      }
+      };
     },
     methods: {
       init () {
-        this.name = ''
-        this.language = ''
-        this.description = ''
-        this.result = null
-        this.resultClass = 'text-success'
+        this.name = '';
+        this.language = '';
+        this.description = '';
+        this.result = null;
+        this.resultClass = 'text-success';
       },
       createModel () {
-        this.loading = true
+        this.loading = true;
         $.ajax({
           type: 'POST',
           url: `${context.SERVER}tts`,
@@ -108,20 +108,20 @@
           },
           dataType: 'json'
         }).done((value) => {
-          this.result = value
+          this.result = value;
         }).fail((error) => {
-          console.log('error:', error)
-          this.resultClass = 'text-danger'
-          this.result = error
+          console.log('error:', error);
+          this.resultClass = 'text-danger';
+          this.result = error;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       },
       close () {
-        this.$emit('update')
+        this.$emit('update');
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

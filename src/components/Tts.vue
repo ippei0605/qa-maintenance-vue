@@ -88,12 +88,12 @@
 </template>
 
 <script>
-  import WatsonSpeech from 'watson-speech'
-  import context from '../context'
-  import myheader from './Header'
-  import ttsCreateModel from './TtsCreateModel'
-  import ttsDeleteModel from './TtsDeleteModel'
-  import ttsUpdateModel from './TtsUpdateModel'
+  import WatsonSpeech from 'watson-speech';
+  import context from '../context';
+  import myheader from './Header';
+  import ttsCreateModel from './TtsCreateModel';
+  import ttsDeleteModel from './TtsDeleteModel';
+  import ttsUpdateModel from './TtsUpdateModel';
 
   export default {
     name: 'tts',
@@ -109,11 +109,11 @@
         errorMessage: '',
         message: '',
         sampleMessage: 'スクラムとは、革新なプロダクトやサービスを開発するためのアプローチだ。アジャイルアプローチを用いる場合、プロダクトバックログを作るところから始める。プロダクトバックログとは、フィーチャーや、プロダクト開発をうまく行うために必要なその他のことについて、優先順位を付けて一覧化したものである。このプロダクトバックログに従って、最も重要で優先順位の高いアイテムから作業を行う。リソース(たとえ』却時間)が尽きたときも、まだ終わっていない作業は完了した作業よりも優先順位が低いものになるだろう。'
-      }
+      };
     },
     created () {
-      this.getCustomizations()
-      this.message = this.sampleMessage
+      this.getCustomizations();
+      this.message = this.sampleMessage;
     },
     methods: {
       speech () {
@@ -126,67 +126,67 @@
               text: this.message,
               token: value.token,
               voice: value.voice
-            }
+            };
             if (this.customization_id !== 'default') {
-              params.customization_id = this.customization_id
+              params.customization_id = this.customization_id;
             }
-            WatsonSpeech.TextToSpeech.synthesize(params)
+            WatsonSpeech.TextToSpeech.synthesize(params);
           }).fail((error) => {
-            console.log('error:', error)
-            this.errorMessage = 'Text to Speech の呼び出しに失敗しました。'
+            console.log('error:', error);
+            this.errorMessage = 'Text to Speech の呼び出しに失敗しました。';
           }).always(() => {
-            return false
-          })
+            return false;
+          });
         } else {
-          return false
+          return false;
         }
       },
       clear () {
-        this.message = ''
+        this.message = '';
       },
       reset () {
-        this.message = this.sampleMessage
+        this.message = this.sampleMessage;
       },
       getCustomizations () {
-        this.errorMessage = ''
-        this.loading = true
+        this.errorMessage = '';
+        this.loading = true;
         $.ajax({
           type: 'GET',
           url: `${context.SERVER}tts`
         }).done((value) => {
-          this.customizations = value.customizations
-          this.customization_id = 'default'
-          this.customization = null
+          this.customizations = value.customizations;
+          this.customization_id = 'default';
+          this.customization = null;
         }).fail((error) => {
-          console.log('error:', error)
-          this.errorMessage = 'カスタムモデル一覧の取得に失敗しました。'
-          this.customizations = null
+          console.log('error:', error);
+          this.errorMessage = 'カスタムモデル一覧の取得に失敗しました。';
+          this.customizations = null;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       },
       getCustomization () {
-        this.errorMessage = ''
+        this.errorMessage = '';
         if (this.customization_id === 'default') {
-          this.customization = null
+          this.customization = null;
         } else {
-          this.loading = true
+          this.loading = true;
           $.ajax({
             type: 'GET',
             url: `${context.SERVER}tts/${this.customization_id}`
           }).done((value) => {
-            this.customization = value
+            this.customization = value;
           }).fail((error) => {
-            console.log('error:', error)
-            this.errorMessage = 'カスタムモデルの取得に失敗しました。'
-            this.customization = null
+            console.log('error:', error);
+            this.errorMessage = 'カスタムモデルの取得に失敗しました。';
+            this.customization = null;
           }).always(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         }
       }
     }
-  }
+  };
 </script>
 #loading-view {
 <!-- Add "scoped" attribute to limit CSS to this component only -->

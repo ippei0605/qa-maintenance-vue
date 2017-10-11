@@ -111,14 +111,14 @@
 </template>
 
 <script>
-  import WatsonSpeech from 'watson-speech'
-  import context from '../context'
-  import myheader from './Header'
-  import sttCreateModel from './SttCreateModel'
-  import sttDeleteModel from './SttDeleteModel'
-  import sttCorpora from './SttCorpora'
-  import sttWord from './SttWord'
-  import sttTrain from './SttTrain'
+  import WatsonSpeech from 'watson-speech';
+  import context from '../context';
+  import myheader from './Header';
+  import sttCreateModel from './SttCreateModel';
+  import sttDeleteModel from './SttDeleteModel';
+  import sttCorpora from './SttCorpora';
+  import sttWord from './SttWord';
+  import sttTrain from './SttTrain';
 
   export default {
     name: 'stt',
@@ -133,10 +133,10 @@
         customization_id: 'default',
         errorMessage: '',
         stream: null
-      }
+      };
     },
     created () {
-      this.getCustomizations()
+      this.getCustomizations();
     },
     methods: {
       startRecognize () {
@@ -149,75 +149,75 @@
             token: value.token,
             model: value.model,
             outputElement: '#outputId' // CSS selector or DOM Element
-          }
+          };
           if (this.customization_id !== 'default') {
-            param.customization_id = this.customization_id
+            param.customization_id = this.customization_id;
           }
           // Speech to Text を呼び出す。
-          this.stream = WatsonSpeech.SpeechToText.recognizeMicrophone(param)
+          this.stream = WatsonSpeech.SpeechToText.recognizeMicrophone(param);
           this.stream.on('error', (error) => {
-            console.log('error:', error)
-            this.errorMessage = 'Speech to Text のストリーム操作でエラーが発生しました。'
-            this.stream = null
-          })
+            console.log('error:', error);
+            this.errorMessage = 'Speech to Text のストリーム操作でエラーが発生しました。';
+            this.stream = null;
+          });
         }).fail((error) => {
-          console.log('error:', error)
-          this.errorMessage = 'Speech to Text の呼び出しに失敗しました。'
-          this.stream = null
-        })
+          console.log('error:', error);
+          this.errorMessage = 'Speech to Text の呼び出しに失敗しました。';
+          this.stream = null;
+        });
       },
       stopRecognize () {
         if (this.stream) {
-          this.stream.stop()
-          this.stream = null
+          this.stream.stop();
+          this.stream = null;
         }
       },
       getCustomizations () {
-        this.errorMessage = ''
-        this.loading = true
+        this.errorMessage = '';
+        this.loading = true;
         $.ajax({
           type: 'GET',
           url: `${context.SERVER}stt`
         }).done((value) => {
-          this.customizations = value.customizations
-          this.customization_id = 'default'
-          this.customization = null
+          this.customizations = value.customizations;
+          this.customization_id = 'default';
+          this.customization = null;
         }).fail((error) => {
-          console.log('error:', error)
-          this.errorMessage = 'カスタムモデル一覧の取得に失敗しました。'
-          this.customizations = null
+          console.log('error:', error);
+          this.errorMessage = 'カスタムモデル一覧の取得に失敗しました。';
+          this.customizations = null;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       },
       getCustomization () {
-        this.errorMessage = ''
+        this.errorMessage = '';
         if (this.customization_id === 'default') {
-          this.customization = null
+          this.customization = null;
         } else {
-          this.loading = true
+          this.loading = true;
           $.ajax({
             type: 'GET',
             url: `${context.SERVER}stt/${this.customization_id}`
           }).done((value) => {
-            this.customization = value
+            this.customization = value;
             for (const i in this.customizations) {
               if (this.customizations[i].customization_id === this.customization.model.customization_id) {
-                this.customizations[i] = this.customization.model
-                break
+                this.customizations[i] = this.customization.model;
+                break;
               }
             }
           }).fail((error) => {
-            console.log('error:', error)
-            this.errorMessage = 'カスタムモデルの取得に失敗しました。'
-            this.customization = null
+            console.log('error:', error);
+            this.errorMessage = 'カスタムモデルの取得に失敗しました。';
+            this.customization = null;
           }).always(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         }
       }
     }
-  }
+  };
 </script>
 #loading-view {
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-  import context from '../context'
+  import context from '../context';
 
   export default {
     name: 'sttWord',
@@ -64,34 +64,34 @@
         options: null,
         fileId: 0,
         uploadFile: null
-      }
+      };
     },
     props: {
       customization: null
     },
     methods: {
       selectedFile (e) {
-        e.preventDefault()
-        const files = e.target.files
-        this.uploadFile = files[0]
+        e.preventDefault();
+        const files = e.target.files;
+        this.uploadFile = files[0];
       },
       init () {
-        this.result = null
-        this.resultClass = 'text-success'
-        this.selected = ''
-        this.options = [{text: '削除するワードを選択してください', value: ''}]
-        this.uploadFile = null
-        const word = this.customization.word
+        this.result = null;
+        this.resultClass = 'text-success';
+        this.selected = '';
+        this.options = [{text: '削除するワードを選択してください', value: ''}];
+        this.uploadFile = null;
+        const word = this.customization.word;
         word.forEach((row) => {
-          this.options.push({text: row.word, value: row.word})
-        })
-        ++this.fileId
+          this.options.push({text: row.word, value: row.word});
+        });
+        ++this.fileId;
       },
       addWord () {
         if (this.uploadFile) {
-          this.loading = true
-          const formdata = new FormData()
-          formdata.append('word-json', this.uploadFile)
+          this.loading = true;
+          const formdata = new FormData();
+          formdata.append('word-json', this.uploadFile);
           $.ajax({
             type: 'POST',
             url: `${context.SERVER}stt/${this.customization.model.customization_id}/word`,
@@ -101,20 +101,20 @@
             processData: false,
             dataType: 'text'
           }).done((value) => {
-            this.result = value
-            this.$emit('update')
+            this.result = value;
+            this.$emit('update');
           }).fail((error) => {
-            console.log('error:', error)
-            this.resultClass = 'text-danger'
-            this.result = error
+            console.log('error:', error);
+            this.resultClass = 'text-danger';
+            this.result = error;
           }).always(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         }
       },
       deleteWord () {
         if (this.selected) {
-          this.loading = true
+          this.loading = true;
           $.ajax({
             type: 'POST',
             url: `${context.SERVER}stt/${this.customization.model.customization_id}/word/${this.selected}/delete`,
@@ -123,19 +123,19 @@
             processData: false,
             dataType: 'text'
           }).done((value) => {
-            this.result = value
-            this.$emit('update')
+            this.result = value;
+            this.$emit('update');
           }).fail((error) => {
-            console.log('error:', error)
-            this.resultClass = 'text-danger'
-            this.result = error
+            console.log('error:', error);
+            this.resultClass = 'text-danger';
+            this.result = error;
           }).always(() => {
-            this.loading = false
-          })
+            this.loading = false;
+          });
         }
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

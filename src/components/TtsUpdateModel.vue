@@ -14,7 +14,7 @@
               <div class="form-group">
                 <label class="col-sm-3 control-label">word file</label>
                 <div class="col-sm-9">
-                  <input class="form-control" type="file">
+                  <input class="form-control" type="file" @change="selectedFile" :key="fileId" name="word-json">
                 </div>
               </div>
               <div class="form-group">
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-  import context from '../context'
+  import context from '../context';
 
   export default {
     name: 'ttsUpdateModel',
@@ -65,45 +65,57 @@
       return {
         loading: false,
         name: '',
-        language: '',
         description: '',
         result: null,
-        resultClass: 'text-success'
-      }
+        resultClass: 'text-success',
+        fileId: 0,
+        uploadFile: null
+      };
+    },
+    props: {
+      customization_id: String
     },
     methods: {
+      selectedFile (e) {
+        e.preventDefault();
+        const files = e.target.files;
+        this.uploadFile = files[0];
+      },
       init (customization) {
-        this.name = customization.name
-        this.description = customization.description
-        this.result = null
-        this.resultClass = 'text-success'
+        this.name = customization.name;
+        this.description = customization.description;
+        this.result = null;
+        this.resultClass = 'text-success';
       },
       updateModel () {
-        this.loading = true
+        this.loading = true;
+        const formdata = new FormData();
+        formdata.append('word-json', this.uploadFile);
+        formdata.append('name', this.name);
+        formdata.append('description', this.description);
         $.ajax({
           type: 'POST',
-          url: `${context.SERVER}tts`,
-          data: {
-            language: this.language,
-            name: this.name,
-            description: this.description
-          },
+          url: `${context.SERVER}tts/${this.customization_id}/update`,
+          data: formdata,
+          cache: false,
+          contentType: false,
+          processData: false,
           dataType: 'json'
         }).done((value) => {
-          this.result = value
+          this.result = value;
         }).fail((error) => {
-          console.log('error:', error)
-          this.resultClass = 'text-danger'
-          this.result = error
+          console.log('error:', error);
+          this.resultClass = 'text-danger';
+          this.result = error;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       },
       close () {
-        this.$emit('update')
+        this.$emit('update');
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

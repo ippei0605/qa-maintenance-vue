@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import context from '@/context'
+  import context from '@/context';
 
   export default {
     name: 'nlcCreateClassifier',
@@ -48,18 +48,18 @@
         uploadFile: null,
         result: null,
         resultClass: 'text-success'
-      }
+      };
     },
     methods: {
       init (uploadFile) {
-        this.uploadFile = uploadFile
-        this.result = null
-        this.resultClass = 'text-success'
+        this.uploadFile = uploadFile;
+        this.result = null;
+        this.resultClass = 'text-success';
       },
       createClassifier () {
-        this.loading = true
-        const formdata = new FormData()
-        formdata.append('training-csv', this.uploadFile)
+        this.loading = true;
+        const formdata = new FormData();
+        formdata.append('training-csv', this.uploadFile);
         $.ajax({
           type: 'POST',
           url: `${context.SERVER}nlc/`,
@@ -69,20 +69,20 @@
           processData: false,
           dataType: 'json'
         }).done((value) => {
-          this.result = value
+          this.result = value;
         }).fail((error) => {
-          console.log('error:', error)
-          this.resultClass = 'text-danger'
-          this.result = error
+          console.log('error:', error);
+          this.resultClass = 'text-danger';
+          this.result = error;
         }).always(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
       },
       close () {
-        this.$emit('update')
+        this.$emit('update');
       }
     }
-  }
+  };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
