@@ -164,13 +164,14 @@
           url: `${context.SERVER}tts/token`
         }).done((value) => {
           const params = {
-            text: text,
+            text: text.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, ''),
             token: value.token,
             voice: value.voice
           };
           if (this.selected !== 'default') {
             params.customization_id = this.selected;
           }
+          console.log(params);
           WatsonSpeech.TextToSpeech.synthesize(params);
         }).fail((error) => {
           console.log('error:', error);

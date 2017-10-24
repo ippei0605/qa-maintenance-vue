@@ -1,3 +1,3 @@
 module.exports = {
-  SERVER: location.hostname === 'localhost' ? 'http://localhost:6003/' : '/'
+  SERVER: location.hostname === 'localhost' ? 'http://localhost:6010/' : '/'
 };

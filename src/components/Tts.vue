@@ -108,7 +108,7 @@
         customization_id: 'default',
         errorMessage: '',
         message: '',
-        sampleMessage: 'スクラムとは、革新なプロダクトやサービスを開発するためのアプローチだ。アジャイルアプローチを用いる場合、プロダクトバックログを作るところから始める。プロダクトバックログとは、フィーチャーや、プロダクト開発をうまく行うために必要なその他のことについて、優先順位を付けて一覧化したものである。このプロダクトバックログに従って、最も重要で優先順位の高いアイテムから作業を行う。リソース(たとえ』却時間)が尽きたときも、まだ終わっていない作業は完了した作業よりも優先順位が低いものになるだろう。'
+        sampleMessage: 'スクラムマスターは、スクラムの価値、原則、プラクティスを関係者全員が理解し、受け入れるよう手助けをする。コーチとして振る舞い、プロセスについてリーダーシップを発揮して、スクラムチームや組織がパフォーマンスの高い、組織独自のスクラムアブローチを育てられるようにする。'
       };
     },
     created () {
@@ -123,13 +123,14 @@
             url: `${context.SERVER}tts/token`
           }).done((value) => {
             const params = {
-              text: this.message,
+              text: this.message.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, ''),
               token: value.token,
               voice: value.voice
             };
             if (this.customization_id !== 'default') {
               params.customization_id = this.customization_id;
             }
+            console.log(params);
             WatsonSpeech.TextToSpeech.synthesize(params);
           }).fail((error) => {
             console.log('error:', error);
