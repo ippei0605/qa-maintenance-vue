@@ -4,67 +4,65 @@
     <div v-show="loading"><span id="loading-view"></span></div>
     <div class="container-fluid" style="margin: 15px 0 0 0">
       <div v-if="errorMessage" class="alert alert-danger" role="alert"><p>ERROR: {{errorMessage}}</p></div>
-      <form id="modelFormId">
-        <div class="btn-group btn-group-justified" role="group">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" @click="$refs.ttsCreateModel.init()"
-                    data-toggle="modal" data-target="#ttsCreateModelModalId">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create
-            </button>
-          </div>
-          <div type="submit" class="btn-group" role="group">
-            <button class="btn btn-default" @click="speech()">
-              <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span> speech
-            </button>
-          </div>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" @click="clear()">
-              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
-            </button>
-          </div>
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-default" @click="reset()">
-              <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Reset
-            </button>
-          </div>
-          <div class="btn-group" role="group">
-            <button v-bind:disabled="customization_id === 'default'" type="button" class="btn btn-default"
-                    @click="$refs.ttsDeleteModel.init()"
-                    data-toggle="modal" data-target="#ttsDeleteModelModalId">
-              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete model
-            </button>
-          </div>
+      <div class="btn-group btn-group-justified" role="group">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default" @click="$refs.ttsCreateModel.init()"
+                  data-toggle="modal" data-target="#ttsCreateModelModalId">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create
+          </button>
         </div>
-        <br>
-        <table id="modelTableId" class="table table-bordered table-striped table-hover">
-          <thead>
-          <tr>
-            <th></th>
-            <th>customization_id</th>
-            <th>name</th>
-            <th>last modified</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td class="text-center">
-              <input type="radio" value="default" v-model="customization_id" @click="getCustomization()">
-            </td>
-            <td>default</td>
-            <td>ja-JP_EmiVoice</td>
-            <td></td>
-          </tr>
-          <tr v-for="item in customizations">
-            <td class="text-center">
-              <input type="radio" :value="item.customization_id" v-model="customization_id" @click="getCustomization()">
-            </td>
-            <td>{{item.customization_id}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.last_modified}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </form>
+        <div type="button" class="btn-group" role="group">
+          <button class="btn btn-default" @click="speech()">
+            <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span> speech
+          </button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default" @click="clear()">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
+          </button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-default" @click="reset()">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Reset
+          </button>
+        </div>
+        <div class="btn-group" role="group">
+          <button v-bind:disabled="customization_id === 'default'" type="button" class="btn btn-default"
+                  @click="$refs.ttsDeleteModel.init()"
+                  data-toggle="modal" data-target="#ttsDeleteModelModalId">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete model
+          </button>
+        </div>
+      </div>
+      <br>
+      <table id="modelTableId" class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+          <th></th>
+          <th>customization_id</th>
+          <th>name</th>
+          <th>last modified</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="text-center">
+            <input type="radio" value="default" v-model="customization_id" @click="getCustomization()">
+          </td>
+          <td>default</td>
+          <td>ja-JP_EmiVoice</td>
+          <td></td>
+        </tr>
+        <tr v-for="item in customizations">
+          <td class="text-center">
+            <input type="radio" :value="item.customization_id" v-model="customization_id" @click="getCustomization()">
+          </td>
+          <td>{{item.customization_id}}</td>
+          <td>{{item.name}}</td>
+          <td>{{item.last_modified}}</td>
+        </tr>
+        </tbody>
+      </table>
       <div class="panel panel-default">
         <div class="panel-heading">WatsonSpeech.TextToSpeech # synthesize</div>
         <div class="panel-body">
@@ -135,11 +133,7 @@
           }).fail((error) => {
             console.log('error:', error);
             this.errorMessage = 'Text to Speech の呼び出しに失敗しました。';
-          }).always(() => {
-            return false;
           });
-        } else {
-          return false;
         }
       },
       clear () {
