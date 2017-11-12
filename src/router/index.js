@@ -5,6 +5,7 @@ import Home from '@/components/Home';
 import Nlc from '@/components/Nlc';
 import Stt from '@/components/Stt';
 import Tts from '@/components/Tts';
+import Feedback from '@/components/Feedback';
 import Auth from '@/components/Auth';
 import Thanks from '@/components/Thanks';
 
@@ -40,6 +41,13 @@ const routes = [
     path: '/tts',
     name: 'Tts',
     component: Tts,
+    meta: {
+      requiresAuth: true
+    }
+  }, {
+    path: '/feedback',
+    name: 'Feedback',
+    component: Feedback,
     meta: {
       requiresAuth: true
     }

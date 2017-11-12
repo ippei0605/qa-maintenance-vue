@@ -27,6 +27,9 @@
               <li :class="$route.path === '/tts' ? 'active' : ''">
                 <router-link to="/tts">Text to Speech</router-link>
               </li>
+              <li :class="$route.path === '/feedback' ? 'active' : ''">
+                <router-link to="/feedback">Feedback Log</router-link>
+              </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><p class="navbar-text">ようこそ {{username}} さん</p></li>
